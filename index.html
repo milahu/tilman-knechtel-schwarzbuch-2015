@@ -102,6 +102,7 @@
   <span id="totalPages"></span>
   <button id="toggleMode">Two-Page Mode</button>
   <a href="OEBPS/">All Pages</a>
+  <a href="OEBPS/fulltext.html">Full Text</a>
 </div>
 
 <div id="viewer" class="single-page">
@@ -406,6 +407,8 @@
   function createIframe(id) {
     const iframe = document.createElement('iframe');
     iframe.id = id;
+    // enable hypothesis annotations in iframe
+    // https://h.readthedocs.io/projects/client/en/latest/publishers/embedding.html
     iframe.setAttribute("enable-annotation", "");
     viewer.appendChild(iframe);
     return iframe;
@@ -422,6 +425,15 @@
     let page2 = document.getElementById('page2');
     if (twoPageMode && !page2) page2 = createIframe('page2');
     if (!twoPageMode && page2) page2.remove();
+
+    // reduce white flash on page load in dark mode
+    // wait extra 100ms to avoid white flash from text layer
+    page1.style.visibility = "hidden";
+    page1.onload = () => { setTimeout(() => { page1.style.visibility = "visible"; }, 100); };
+    if (twoPageMode) {
+      page2.style.visibility = "hidden";
+      page2.onload = () => { setTimeout(() => { page2.style.visibility = "visible"; }, 100); };
+    }
 
     if (twoPageMode) {
       // Compute spread: left = even page
