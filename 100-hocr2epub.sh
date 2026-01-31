@@ -33,8 +33,9 @@ fi
 args+=(
   --scale "$scale"
   --image-format avif
-  --text-format svg
+  --text-format html
   --doc-title "$doc_title"
+  --canonical-url-base https://milahu.github.io/tilman-knechtel-schwarzbuch-2015/
 )
 
 printf '>'
